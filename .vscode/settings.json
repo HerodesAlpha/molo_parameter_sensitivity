@@ -1,0 +1,26 @@
+{
+  // Load environment variables from .env file for Python processes
+  "python.envFile": "${workspaceFolder}/.env",
+  
+  // Python interpreter path - will be read from .env file (PYTHON_PATH variable)
+  // Note: You may need to restart Cursor after updating .env file
+  // Or run the setup_python.ps1 script to load the environment variable
+  "python.defaultInterpreterPath": "${env:PYTHON_PATH}",
+  
+  // If the above doesn't work, you can set it directly here:
+  // "python.defaultInterpreterPath": "C:\\path\\to\\your\\python.exe",
+  
+  // Terminal configuration to load .env variables
+  "terminal.integrated.profiles.windows": {
+    "PowerShell with .env": {
+      "path": "powershell.exe",
+      "args": [
+        "-NoExit",
+        "-Command",
+        "& { if (Test-Path '.env') { Get-Content '.env' | ForEach-Object { if ($_ -match '^([^=]+)=(.*)$') { $name=$matches[1].Trim(); $val=$matches[2].Trim(); [Environment]::SetEnvironmentVariable($name, $val, 'Process') } } } }"
+      ]
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell with .env"
+}
+
